@@ -4,6 +4,7 @@ class User < ApplicationRecord
   # バリデーション
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+         
   validates :name, presence: true
   validates :profile, presence: true
   validates :occupation, presence: true

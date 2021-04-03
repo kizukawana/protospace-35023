@@ -1,10 +1,10 @@
 class PrototypesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :new, :create]
+  before_action :set_prototype, except: [:index, :new, :create]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :contributor_confirmation, only: [:edit, :update, :destroy]
 
   def index
-   @prototypes = Prototype.all
+   @prototypes = Prototype.includes(:user)
   end
 
   def new
@@ -21,20 +21,17 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    # binding.pry
     @comment = Comment.new
     @comments = @prototype.comments
     
   end
   
   def edit
-    
   end
 
   def update
-    
     if @prototype.update(prototype_params)
-      redirect_to prototype_path
+      redirect_to prototype_path(@prototype)
   else
      render :edit
   end
@@ -44,7 +41,7 @@ class PrototypesController < ApplicationController
     if @prototype.destroy
        redirect_to root_path
       else
-        redirect_to root_path
+      redirect_to root_path
     end
   end
 
